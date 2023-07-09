@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Canvas } from "@react-three/fiber";
+import React, { FC, Suspense, useState } from "react";
+import ModelScene from "./components/ModelScene";
+import { ModelType } from "./types";
+import { models } from "./data";
 
-function App() {
+const ModelsList: FC<{ onCardClick: (model: ModelType) => void }> = ({
+  onCardClick,
+}) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="models-list-container">
+      <div className="models-list">
+        {models.map((modelOption, i) => (
+          <li key={i} onClick={() => onCardClick(modelOption.Model)}>
+            <div className="img-container">
+              <img src={modelOption.image} alt={modelOption.name} />
+            </div>
+            <span>{modelOption.name}</span>
+          </li>
+        ))}
+      </div>
     </div>
   );
-}
+};
+
+const App = () => {
+  const [modelConfig, setModelConfig] = useState<ModelType>(models[0].Model);
+
+  const onModelChange = (model: ModelType) => {
+    setModelConfig(model);
+  };
+
+  return (
+    <div className="app">
+      <Suspense fallback={"Loading..."}>
+        <div className="model-scene">
+          <Canvas shadows>
+            <ModelScene model={modelConfig} />
+          </Canvas>
+        </div>
+        <ModelsList onCardClick={onModelChange} />
+      </Suspense>
+    </div>
+  );
+};
 
 export default App;

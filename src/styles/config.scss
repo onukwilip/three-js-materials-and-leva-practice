@@ -1,0 +1,22 @@
+@mixin flex($ai, $jc, $gap, $fld: false) {
+    display: flex !important;
+    align-items: $ai;
+    justify-content: $jc;
+    gap: $gap;
+
+    @if ($fld != false) {
+        flex-direction: $fld;
+    }
+}
+
+@mixin media($prefix, $size) {
+    @media (#{$prefix}-width: $size) {
+        @content;
+    }
+}
+
+@mixin media-h($prefix, $size) {
+    @media (#{$prefix}-height: $size) {
+        @content;
+    }
+}
