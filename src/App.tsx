@@ -1,17 +1,50 @@
 import { Canvas } from "@react-three/fiber";
-import React, { FC, Suspense, useState } from "react";
-import ModelScene from "./components/ModelScene";
+import React, { FC, Suspense, useMemo, useState } from "react";
+// import ModelScene from "./components/ModelScene";
 import { ModelType } from "./types";
 import { models } from "./data";
+import { motion, Variants } from "framer-motion";
 
 const ModelsList: FC<{ onCardClick: (model: ModelType) => void }> = ({
   onCardClick,
 }) => {
+  const variants: Variants = useMemo<Variants>(() => {
+    if (window.innerWidth > 1150)
+      return {
+        initial: {
+          x: -100,
+          opacity: 0.5,
+        },
+        animate: {
+          x: 0,
+          opacity: 1,
+        },
+      };
+    else
+      return {
+        initial: {
+          y: 100,
+          opacity: 0.5,
+        },
+        animate: {
+          y: 0,
+          opacity: 1,
+        },
+      };
+  }, []);
+
   return (
     <div className="models-list-container">
       <div className="models-list">
         {models.map((modelOption, i) => (
-          <li key={i} onClick={() => onCardClick(modelOption.Model)}>
+          <li
+            key={i}
+            // variants={variants}
+            // initial="initial"
+            // animate="animate"
+            // transition={{ delay: i * 0.1 }}
+            onClick={() => onCardClick(modelOption.Model)}
+          >
             <div className="img-container">
               <img src={modelOption.image} alt={modelOption.name} />
             </div>
@@ -29,6 +62,8 @@ const App = () => {
   const onModelChange = (model: ModelType) => {
     setModelConfig(model);
   };
+
+  const ModelScene = React.lazy(() => import("./components/ModelScene"));
 
   return (
     <div className="app">
