@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import { ModelType } from "../types";
 import {
   PerspectiveCamera,
@@ -9,8 +9,10 @@ import {
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import { ToggleContext } from "../contexts/ToggleContext";
 
 const ModelScene: React.FC<{ model: ModelType }> = ({ model }) => {
+  const displayState = useContext(ToggleContext);
   const orbitRef = useRef<OrbitControlsImpl>(null);
   const contactShadowYPosition =
     model.props.name === "Backpack"
@@ -35,6 +37,7 @@ const ModelScene: React.FC<{ model: ModelType }> = ({ model }) => {
         width={2}
         height={2}
         far={100}
+        {...(displayState.state === "dark" ? { color: "white" } : {})}
       />
 
       <ambientLight color={"white"} intensity={0.5} />
@@ -44,7 +47,7 @@ const ModelScene: React.FC<{ model: ModelType }> = ({ model }) => {
         position={[1, 1, 1]}
         castShadow
       >
-        <Sphere scale={0.05} />
+        {/* <Sphere scale={0.05} /> */}
       </directionalLight>
     </>
   );

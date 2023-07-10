@@ -1,10 +1,12 @@
-import React, { FC, useEffect, useState, useRef } from "react";
+import React, { FC, useEffect, useState, useRef, useContext } from "react";
 import { useNProgress } from "@tanem/react-nprogress";
 import { gsap } from "gsap";
+import { ToggleContext } from "./contexts/ToggleContext";
 
 const Home = React.lazy(() => import("./components/Home"));
 
 const Loader: FC<{ isAnimating: boolean }> = ({ isAnimating }) => {
+  const displayState = useContext(ToggleContext);
   const { progress } = useNProgress({
     isAnimating: isAnimating,
   });
@@ -31,7 +33,7 @@ const Loader: FC<{ isAnimating: boolean }> = ({ isAnimating }) => {
   }, [progress]);
 
   return (
-    <div className="loading">
+    <div className={`loading ${displayState.state}`}>
       <div className="battery">
         <div ref={loaderRef}>
           <div className="bubble1" ref={bubble1Ref}></div>
@@ -45,6 +47,7 @@ const Loader: FC<{ isAnimating: boolean }> = ({ isAnimating }) => {
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  const displayState = useContext(ToggleContext);
 
   const fetchComponent = async () => {
     await import("./components/Home");
@@ -56,7 +59,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="app">
+    <div className={`app ${displayState.state}`}>
       {loading ? <Loader isAnimating={loading} /> : <Home />}
     </div>
   );

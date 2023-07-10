@@ -1,3 +1,5 @@
+$dark: lighten(#000, 20);
+
 @mixin flex($ai, $jc, $gap, $fld: false) {
     display: flex !important;
     align-items: $ai;

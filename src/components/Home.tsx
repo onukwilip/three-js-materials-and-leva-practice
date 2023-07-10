@@ -1,9 +1,13 @@
-import React, { FC, useMemo, useState } from "react";
+import React, { FC, useMemo, useState, useContext } from "react";
 import { models } from "../data";
 import { ModelType } from "../types";
 import { Canvas } from "@react-three/fiber";
 import ModelScene from "./ModelScene";
 import { motion, Variants } from "framer-motion";
+import { Checkbox, CheckboxProps } from "semantic-ui-react";
+import sun from "../assets/images/icons8-sun-128.png";
+import moon from "../assets/images/icons8-moon-100.png";
+import { ToggleContext } from "../contexts/ToggleContext";
 
 const ModelsList: FC<{ onCardClick: (model: ModelType) => void }> = ({
   onCardClick,
@@ -56,6 +60,26 @@ const ModelsList: FC<{ onCardClick: (model: ModelType) => void }> = ({
   );
 };
 
+const Toggle: FC = () => {
+  const displayState = useContext(ToggleContext);
+
+  const onToggle = (
+    e: React.FormEvent<HTMLInputElement>,
+    { checked }: CheckboxProps
+  ) => {
+    if (checked === true) displayState.toggleToDark();
+    else displayState.toggleToLight();
+  };
+
+  return (
+    <div className="toggle">
+      <img src={sun} alt="sun" />
+      <Checkbox slider className="my-slider" onChange={onToggle} />
+      <img src={moon} alt="moon" />
+    </div>
+  );
+};
+
 const Home = () => {
   const [modelConfig, setModelConfig] = useState<ModelType>(models[0].Model);
 
@@ -70,6 +94,7 @@ const Home = () => {
           <ModelScene model={modelConfig} />
         </Canvas>
       </div>
+      <Toggle />
       <ModelsList onCardClick={onModelChange} />
     </>
   );

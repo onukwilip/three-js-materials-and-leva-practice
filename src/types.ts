@@ -8,3 +8,9 @@ export type ModelType = {
   >;
   props: JSX.IntrinsicElements["group"];
 };
+
+export type ToggleContextType = {
+  state: "light" | "dark";
+  toggleToLight: () => void;
+  toggleToDark: () => void;
+};
