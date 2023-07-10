@@ -14,6 +14,7 @@ import { useLoader } from "@react-three/fiber";
 import { GLTF } from "three-stdlib";
 import { useControls } from "leva";
 import img from "../assets/images/backpack.png";
+import * as rdd from "react-device-detect";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -45,6 +46,7 @@ export const TShirt = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>(
 
     const hoverHandler = (e: any) => {
       e.stopPropagation();
+      if (rdd.isMobile) return;
       (
         document.getElementsByClassName(
           "leva-c-bSezwh"

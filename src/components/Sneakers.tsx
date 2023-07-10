@@ -12,6 +12,7 @@ import React, { forwardRef, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { useControls } from "leva";
+import * as rdd from "react-device-detect";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -57,6 +58,7 @@ export const Sneakers = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>(
 
     const hoverHandler = (e: any, materialName: string) => {
       e.stopPropagation();
+      if (rdd.isMobile) return;
       document.getElementById(`Sneaker.${materialName}`)?.focus();
     };
 

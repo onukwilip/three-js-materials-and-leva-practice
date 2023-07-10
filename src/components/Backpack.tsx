@@ -12,6 +12,7 @@ import React, { useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { useControls } from "leva";
+import * as rdd from "react-device-detect";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -52,6 +53,9 @@ export const Backpack = React.forwardRef<
 
   const hoverHandler = (e: any, materialName: "extra" | "base") => {
     e.stopPropagation();
+
+    if (rdd.isMobile) return;
+
     if (materialName === "extra") {
       (
         document.getElementsByClassName(
